@@ -11,7 +11,6 @@ import {
   X
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import VideoDemo from "../assets/Kishan-Kumar_Assignment.mp4";
 
 
 const BackgroundEffect = () => (
@@ -158,7 +157,7 @@ const Hero = () => {
             {/* Video iframe (YouTube example) */}
             <iframe
               className="w-full h-full"
-              src={VideoDemo}
+              src="https://www.youtube.com/embed/n29PfKYqF9k?si=T8BxSAOR00cCxOCy"
               title="Demo Video"
               allow="autoplay; encrypted-media"
               allowFullScreen
