@@ -7,14 +7,16 @@ import {
   PieChart,
   ArrowRight,
   PlayCircle,
-  Layers,
   Users,
+  X
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import VideoDemo from "../assets/Kishan-Kumar_Assignment.mp4";
+
 
 const BackgroundEffect = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    {/* Animated gradient orbs */}
+    {/* Gradient orbs */}
     <div className="absolute w-screen h-screen">
       <div className="absolute w-96 h-96 -top-48 -left-48 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute w-96 h-96 top-1/3 right-1/4 bg-violet-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -48,6 +50,7 @@ const GlowingBadge = ({ icon: Icon, text, color }) => (
 
 const Hero = () => {
   const [typedText, setTypedText] = useState("");
+  const [showVideo, setShowVideo] = useState(false);
   const fullText = "Smart Dashboard with Live API Data";
   const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ const Hero = () => {
     },
     {
       text: "Watch Demo",
-      onClick: () => navigate("/dashboard"),
+      onClick: () => setShowVideo(true), // <-- open modal
       className:
         "bg-gray-900 border border-cyan-500/30 hover:bg-gray-800 hover:border-cyan-500/50",
       icon: <PlayCircle className="ml-2 w-5 h-5 text-cyan-400" />,
@@ -83,100 +86,86 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-black text-white font-sans overflow-hidden">
       <BackgroundEffect />
       <motion.main
-        variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="relative container mx-auto px-6 pt-32 pb-24"
       >
         <div className="max-w-5xl mx-auto text-center">
-          {/* Logo/Icon */}
-          <motion.div
-            variants={itemVariants}
-            className="inline-flex items-center justify-center mb-6"
-          >
-            <BarChart3 className="w-16 h-16 text-cyan-400" />
-          </motion.div>
+          {/* Logo */}
+          <BarChart3 className="w-16 h-16 text-cyan-400 mx-auto mb-6" />
 
           {/* Badges */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap justify-center gap-4 mb-8"
-          >
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             <GlowingBadge icon={Database} text="Live Data" color="cyan" />
             <GlowingBadge icon={Users} text="User Insights" color="cyan" />
             <GlowingBadge icon={LineChart} text="Analytics" color="cyan" />
             <GlowingBadge icon={PieChart} text="Categories" color="cyan" />
-          </motion.div>
+          </div>
 
           {/* Title */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-6xl md:text-7xl font-bold mb-6 tracking-tight"
-          >
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 bg-clip-text text-transparent">
               Explore Your Store Analytics
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Animated Subtitle */}
-          <motion.div variants={itemVariants} className="h-8 mb-8">
+          <div className="h-8 mb-8">
             <span className="text-xl text-cyan-400 font-mono">
               {typedText}
               <span className="animate-pulse">|</span>
             </span>
-          </motion.div>
+          </div>
 
           {/* Description */}
-          <motion.p
-            variants={itemVariants}
-            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
-          >
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Visualize products, users, and orders in real-time with interactive
             charts and smart insights powered by the FakeStore API.
-          </motion.p>
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-            }}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-12"
-          >
+          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-12">
             {buttons.map(({ text, onClick, className, icon }, index) => (
-              <motion.button
+              <button
                 key={index}
                 onClick={onClick}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 className={`group px-8 py-4 cursor-pointer rounded-xl transition-all duration-300 flex items-center justify-center font-medium text-white ${className}`}
               >
                 <span>{text}</span>
                 {icon}
-              </motion.button>
+              </button>
             ))}
-          </motion.div>
+          </div>
         </div>
       </motion.main>
+
+      {/* Video Modal */}
+      {showVideo && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="relative w-[90%] md:w-[70%] lg:w-[60%] aspect-video rounded-2xl overflow-hidden shadow-2xl">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Video iframe (YouTube example) */}
+            <iframe
+              className="w-full h-full"
+              src={VideoDemo}
+              title="Demo Video"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
